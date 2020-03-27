@@ -141,7 +141,7 @@ def on_message(bot, channel, sender, message):
                 GLOBALUSERINFO = DATA["query"]["globaluserinfo"]
                 for u in GLOBALUSERINFO:
                         try:
-                                if(len(str(u["locked"])) == 0):
+                            if str(u["locked"]) != 'foobar':
                                         bot.send_message(channel, str(u["name"]) + " (Globally Locked) has made " + str(u["editcount"]) + " edits on all Miraheze wikis")
                         except KeyError:
                                 bot.send_message(channel, str(u["name"]) + " has made " + str(u["editcount"]) + " on all Miraheze wikis")
