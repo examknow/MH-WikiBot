@@ -142,7 +142,7 @@ def on_message(bot, channel, sender, message):
                 for u in GLOBALUSERINFO:
                         try:
                             if str(u["locked"]) != '1':
-                                        bot.send_message(channel, str(u["name"]) + " (Globally Locked) has made " + str(u["editcount"]) + " edits on all Miraheze wikis")
+                                        bot.send_message(channel, str(u["name"]) + " (Globally Locked) has made " + str(u["editcount"]) + " edits on all Miraheze wikis" + str(u["locked"]))
                         except KeyError:
                                 bot.send_message(channel, str(u["name"]) + " has made " + str(u["editcount"]) + " on all Miraheze wikis")
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
