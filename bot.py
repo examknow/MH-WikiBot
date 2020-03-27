@@ -131,14 +131,14 @@ def on_message(bot, channel, sender, message):
         PARAMS = {
           "action": "query",
           "format": "json",
-          "list": "globaluserinfo",
+          "meta": "globaluserinfo",
           "guiuser": user,
           "guiprop": "editcount"
         }
         try:
                 R = S.get(url=URL, params=PARAMS)
                 DATA = R.json()
-                GLOBALUSERINFO = DATA["globaluserinfo"]
+                GLOBALUSERINFO = DATA["query"]["globaluserinfo"]
                 for u in GLOBALUSERINFO:
                         try:
                                 if str(u["locked"]) == '':
