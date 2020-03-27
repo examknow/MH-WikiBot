@@ -123,6 +123,31 @@ def on_message(bot, channel, sender, message):
                                 bot.send_message(channel, str(u["name"]) + " has made " + str(u["editcount"]) + " edits on " + wiki + "wiki.")
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
             bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?")
+    if message.lower().startswith('!globaluser'):
+        arg = message.split(' ')
+        user = arg[1]
+        S = requests.Session()
+        URL = "https://meta.miraheze.org/w/api.php"
+        PARAMS = {
+          "action": "query",
+          "format": "json",
+          "meta": "globaluserinfo",
+          "guiuser": user,
+          "guiprop": "editcount"
+        }
+        try:
+                R = S.get(url=URL, params=PARAMS)
+                DATA = R.json()
+                GLOBALUSERINFO = DATA["query"]["globaluserinfo"]
+                for u in GLOBALUSERINFO:
+                        try:
+                                if u["locked"] == '':
+                                        bot.send_message(channel, u["name"] + " (Globally Locked) has made " + u["editcount"] + " edits on all Miraheze wikis")
+                        except KeyError:
+                                bot.send_message(channel, u["name"] + " has made " + u["editcount"] + " on all Miraheze wikis")
+        except ValueError:  # includes simplejson.decoder.JSONDecodeError
+            bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?") 
+           
 def on_pm(bot, sender, message):
     global topic
     global nick
