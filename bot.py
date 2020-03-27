@@ -120,10 +120,6 @@ def on_message(bot, channel, sender, message):
                                 if str(u["blockid"]) != '':
                                         bot.send_message(channel, str(u["name"]) + " (Blocked) has made " + str(u["editcount"]) + " edits on " + wiki + "wiki")
                         except KeyError:
-                            try:
-                                GROUPS = DATA["query"]["users"]["groupmemberships"]
-                                bot.send_message(channel, str(u["name"]) + " (" + str(u["group"]) + ") has made " + str(u["editcount"]) + " edits on " + wiki + "wiki.")
-                            except KeyError:
                                 bot.send_message(channel, str(u["name"]) + " has made " + str(u["editcount"]) + " edits on " + wiki + "wiki.")
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
             bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?")
