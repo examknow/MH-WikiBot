@@ -145,6 +145,9 @@ def on_message(bot, channel, sender, message):
                                         bot.send_message(channel, u["name"] + " (Globally Locked) has made " + u["editcount"] + " edits on all Miraheze wikis")
                         except KeyError:
                                 bot.send_message(channel, u["name"] + " has made " + u["editcount"] + " on all Miraheze wikis")
+        except TypeError:
+            print("TypeError when using !globaluser on " + channel)
+            bot.send_message(channel, "An unexpected error has occured. I have reported this to Examknow.")
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
             bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?") 
            
