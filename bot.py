@@ -5,7 +5,7 @@ import re
 import time
 import random
 topic = '' #channel topic for use in channels where quotebot runs
-nick = 'quirctest123'
+nick = 'WikiBotTester'
 bot = QuIRC.IRCConnection()
 lastgreeter = ''
 greetings = [
@@ -16,15 +16,15 @@ greetings = [
     "Hey {}!"
 ]
 owapikey = '' #place an api key for open weather map here
-admins = ['freenode-staff', 'freenode-staff']
+admins = ['Examknow', 'freenode-staff']
 ##FUNCTION FLAGS - SET TO 1 TO ENABLE
-greetingsbot = 1
+greetingsbot = 0
 weatherbot = 0
-linkbot = 1
-quotebot = 1
-pingbot = 1
+linkbot = 0
+quotebot = 0
+pingbot = 0
 buttbot = 0
-cashortbot = 1
+cashortbot = 0
 nspassword = ''
 
 def getinfo():
@@ -73,7 +73,6 @@ def getinfo():
             admins = admins.split(',')
         if setting[0] == 'nspassword':
             nspassword = setting[1]
-       
 def on_connect(bot):
     bot.set_nick(nick)
     bot.send_user_packet(nick)
@@ -83,7 +82,7 @@ def on_welcome(bot):
     bot.send_message('NickServ', 'identify ' + nspassword)
     print('Authed to NickServ')
     time.sleep(10)
-    bot.join_channel('#channel')
+    bot.join_channel('#SigmaBot')
     print('Joined channels')
 def on_message(bot, channel, sender, message):
     global topic
@@ -97,128 +96,33 @@ def on_message(bot, channel, sender, message):
     global pingbot
     global buttbot
     global cashortbot
-    global admins 
+    global admins
     global owapikey
-    if "hi " in message.lower() and greetingsbot == 1 or "hello " in message.lower() and greetingsbot == 1:
-        global lastgreeter
-        if lastgreeter == sender:
-            print('Greetingsbot failed as sender was same as last greeter')
-        else:
-            print('got greeting message')
-            greeting_message = random.choice(greetings).format(sender)
-            print('picked greeting: ' + greeting_message)
-            bot.send_message(channel, greeting_message)
-            print('Sent greeting')
-        lastgreeter = sender
-    for message_part in message.split():
-        if message_part.startswith("http://") and linkbot == 1 or message_part.startswith("https://") and linkbot == 1:
-            print('Found link')
-            html = requests.get(message_part).text
-            title_match = re.search("<title>(.*?)</title>", html)
-            print('Finding a title')
-            if title_match:
-                print(title_match.group(1))
-                title = title_match.group(1)
-                title = title.encode("ascii", "replace")
-                print(title)
-                message = "Title of the URL by {}: {}".format(sender, title)
-                message = message.encode("ascii", "replace")
-                print(message)
-                bot.send_message(channel, message)
-                print('Sent title')
-    if message.split()[0] == "!weather" and weatherbot == 1:
-        print('Seen weather ping')
-        if len(message.split()) > 1:
-            location = message.lower()
-            location = location[9:]
-            print('Detected location: ' + location)
-            weather_data = requests.get("http://api.openweathermap.org/data/2.5/weather?q="+location+"&APPID="+owapikey+ "&units=metric").json()
-            if weather_data["cod"] == 200:
-                print('Got 200 response from API')
-                message = "The weather in {} is {} and {} degrees.".format(weather_data["name"], weather_data["weather"][0]["description"], weather_data["main"]["temp"])
-                message = message.encode("ascii", "replace")
-                bot.send_message(channel, message)
-                print('Sent weather to channel')
-            else:
-                bot.send_message(channel, sender + ': API Fault')
-                print('API fault on !weather')
-        else:
-            bot.send_message(channel, "Usage: !weather Istanbul")
-    for message_part in message.split():
-        if message_part.startswith("!pickquote") and quotebot == 1:
-            print('Got !pickquote command')
-            numq = message.lower()
-            numq = numq[10:]
-            print('Picking from ' + str(numq))
-            quotelist = open('quotes.csv', 'r')
-            print('Getting quotes')
-            quotes = quotelist.read()
-            quotes = quotes.split(',')
-            print('Read quotes')
-            numq = int(numq)-1
-            picked = random.randint(0,int(numq))
-            print('Picked ' + str(picked))
-            pq = quotes[picked]
-            print('Which is: ' + pq)
-            bot.send_message(channel, 'Todays quote is: ' + str(pq))
-            bot.send_message('ChanServ', 'topic ' + channel + ' ' +  topic  + ' | Quote of the day: ' + pq)
-            print('Announed it')
-    if buttbot == 1:
-        message1 = message.lower()
-        message1 = message.split(' ')
-        newmess = ''
-        print(message)
-        wordsf = open('bbwords.csv', 'r')
-        words = wordsf.read()
-        words = words.split(',')
-        print(words)
-        go = random.randint(1,4)
-        print(go)
-        if any(x in words for x in message) and go == 1:
-            print('on path')
-            messlen = len(message1)
-            replace = random.randint(1, messlen)
-            on = 0
-            while on < messlen:
-                if on == replace:
-                    newmess = newmess + ' butt'
-                else:
-                    newmess = newmess + ' ' + message1[on]
-                on = on + 1
-            bot.send_message(channel, newmess)
-    if message.lower() == '!getinfo' and sender in admins:
-        bot.set_nick(nick + '-down')
-        bot.send_message(sender, 'Rebuilding')
-        topic = ''
-        nick = ''
-        lastgreeter = ''
-        greetings = ''
-        owapikey = ''
-        admins = ''
-        greetingsbot = 0
-        weatherbot = 0
-        linkbot = 0
-        quotebot = 0
-        pingbot = 0
-        buttbot = 0
-        cashortbot = 0
-        nspassword = ''
-        time.sleep(1)
-        getinfo()
-        time.sleep(1)
-        bot.send_message(sender, 'Rebuilt')
-        bot.set_nick(nick)
-    if message.lower().startswith('!wmca') and cashortbot == 1:
-        user = message.split(' ')
-        user = user[1]
-        bot.send_message(channel, sender + ': https://meta.wikimedia.org/wiki/Special:CentralAuth/' + user)
-    if message.lower().startswith('!mhca') and cashortbot == 1:
-        user = message.split(' ')
-        user = user[1]
-        bot.send_message(channel, sender + ': https://meta.miraheze.org/wiki/Special:CentralAuth/' + user)
-        
-        
-                    
+    if message.lower().startswith('!userinfo'):
+        arg = message.split(' ')
+        wiki = arg[1]
+	user = arg[2]
+	S = requests.Session()
+	URL = "https://" + wiki + ".miraheze.org/w/api.php"
+	PARAMS = {
+ 	   "action": "query",
+    	   "format": "json",
+           "list": "users",
+           "ususers": user,
+           "usprop": "blockinfo|groups|editcount|registration|emailable|gender"
+	}
+	try:
+		R = S.get(url=URL, params=PARAMS)
+		DATA = R.json()
+		USERS = DATA["query"]["users"]
+		for u in USERS:
+			try:
+				if str(u["blockid"]) != '':
+					bot.send_message(channel, str(u["name"]) + " (Blocked) has made " + str(u["editcount"]) + " edits on " + wiki + "wiki")
+			except KeyError:
+				bot.send_message(channel, str(u["name"]) + " has " + str(u["editcount"]) + " edits on " + wiki + "wiki.")
+	except ValueError:  # includes simplejson.decoder.JSONDecodeError
+	    bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?")
 def on_pm(bot, sender, message):
     global topic
     global nick
@@ -234,74 +138,6 @@ def on_pm(bot, sender, message):
     global admins 
     global owapikey
     print('Got PM')
-    if message.lower() == 'ping' and pingbot == 1:
-        print('Got ping message over PM')
-        bot.send_message(sender, 'PONG')
-        print('PONGed user back')
-    if "hi " in message.lower() and greetingsbot == 1 or "hello " in message.lower() and greetingsbot == 1:
-        global lastgreeter
-        print('got greeting message')
-        greeting_message = random.choice(greetings).format(sender)
-        print('picked greeting: ' + greeting_message)
-        bot.send_message(sender, greeting_message)
-        print('Sent greeting')
-    for message_part in message.split():
-        if message_part.startswith("http://") and linkbot == 1 or message_part.startswith("https://") and linkbot == 1:
-            print('Found link')
-            html = requests.get(message_part).text
-            title_match = re.search("<title>(.*?)</title>", html)
-            print('Finding a title')
-            if title_match:
-                print(title_match.group(1))
-                title = title_match.group(1)
-                title = title.encode("ascii", "replace")
-                print(title)
-                message = "Title of the URL by {}: {}".format(sender, title)
-                message = message.encode("ascii", "replace")
-                print(message)
-                bot.send_message(sender, message)
-                print('Sent title')
-    if message.split()[0] == "weather" and weatherbot == 1:
-        print('Seen weather ping')
-        if len(message.split()) > 1:
-            location = message.lower()
-            location = location[8:]
-            print('Detected location: ' + location)
-            weather_data = requests.get("http://api.openweathermap.org/data/2.5/weather?q="+location+"&APPID="+owapikey+ "&units=metric").json()
-            if weather_data["cod"] == 200:
-                print('Got 200 response from API')
-                message = "The weather in {} is {} and {} degrees.".format(weather_data["name"], weather_data["weather"][0]["description"], weather_data["main"]["temp"])
-                message = message.encode("ascii", "replace")
-                bot.send_message(sender, message)
-                print('Sent weather to channel')
-            else:
-                bot.send_message(sender, sender + ': API Fault')
-                print('API fault on weather')
-        else:
-            bot.send_message(sender, "Usage: weather Istanbul")
-    if buttbot == 1:
-        message1 = message.lower()
-        message1 = message.split(' ')
-        newmess = ''
-        print(message)
-        wordsf = open('bbwords.csv', 'r')
-        words = wordsf.read()
-        words = words.split(',')
-        print(words)
-        go = random.randint(1,4)
-        print(go)
-        if any(x in words for x in message) and go == 1:
-            print('on path')
-            messlen = len(message1)
-            replace = random.randint(1, messlen)
-            on = 0
-            while on < messlen:
-                if on == replace:
-                    newmess = newmess + ' butt'
-                else:
-                    newmess = newmess + ' ' + message1[on]
-                on = on + 1
-            bot.send_message(sender, newmess)
     if message.lower() == 'getinfo' and sender in admins:
         bot.set_nick(nick + '-down')
         bot.send_message(sender, 'Rebuilding')
@@ -324,15 +160,6 @@ def on_pm(bot, sender, message):
         time.sleep(1)
         bot.send_message(sender, 'Rebuilt')
         bot.set_nick(nick)
-    if message.lower().startswith('wmca') and cashortbot == 1:
-        user = message.split(' ')
-        user = user[1]
-        bot.send_message(sender, sender + ': https://meta.wikimedia.org/wiki/Special:CentralAuth/' + user)
-    if message.lower().startswith('mhca') and cashortbot == 1:
-        user = message.split(' ')
-        user = user[1]
-        bot.send_message(sender, sender + ': https://meta.miraheze.org/wiki/Special:CentralAuth/' + user)
-    
 getinfo()
 bot.on_private_message.append(on_pm)
 bot.on_connect.append(on_connect)
