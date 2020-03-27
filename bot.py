@@ -109,7 +109,7 @@ def on_message(bot, channel, sender, message):
            "format": "json",
            "list": "users",
            "ususers": user,
-           "usprop": "blockinfo|groups|editcount|registration|emailable|gender"
+           "usprop": "blockinfo|groupmemberships|editcount|registration|emailable|gender"
         }
         try:
                 R = S.get(url=URL, params=PARAMS)
@@ -120,27 +120,11 @@ def on_message(bot, channel, sender, message):
                                 if str(u["blockid"]) != '':
                                         bot.send_message(channel, str(u["name"]) + " (Blocked) has made " + str(u["editcount"]) + " edits on " + wiki + "wiki")
                         except KeyError:
+                            try:
+                                GROUPS = DATA["query"]["users"]["groupmemberships"]
+                                bot.send_message(channel, str(u["name"]) + " (" + str(u["group"]) + ") has made " + str(u["editcount"]) + " edits on " + wiki + "wiki.")
+                            except KeyError:
                                 bot.send_message(channel, str(u["name"]) + " has made " + str(u["editcount"]) + " edits on " + wiki + "wiki.")
-        except ValueError:  # includes simplejson.decoder.JSONDecodeError
-            bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?")
-    if message.lower().startswith('!globaluser'):
-        arg = message.split(' ')
-        user = arg[1]
-        S = requests.Session()
-        URL = "https://meta.miraheze.org/w/api.php"
-        PARAMS = {
-          "action": "query",
-          "format": "json",
-          "meta": "globaluserinfo",
-          "guiuser": user,
-          "guiprop": "editcount"
-        }
-        try:
-                R = S.get(url=URL, params=PARAMS)
-                DATA = R.json()
-                GLOBALUSERINFO = DATA["query"]["globaluserinfo"]
-                for u in GLOBALUSERINFO:
-                    bot.send_message(channel, user + " has made " + str(u["editcount"]) + " on all Miraheze wikis")
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
             bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?")
 def on_pm(bot, sender, message):
