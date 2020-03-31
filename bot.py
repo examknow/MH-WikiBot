@@ -161,8 +161,6 @@ def on_message(bot, channel, sender, message):
         S = requests.Session()
 
         URL = "https://" + wiki + ".miraheze.org/w/api.php"
-
-# Step 1: GET request to fetch login token
         PARAMS_0 = {
             "action": "query",
             "meta": "tokens",
@@ -174,10 +172,7 @@ def on_message(bot, channel, sender, message):
         DATA = R.json()
 
         LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
-
-# Step 2: POST request to log in. Use of main account for login is not
-# supported. Obtain credentials via Special:BotPasswords
-# (https://www.mediawiki.org/wiki/Special:BotPasswords) for lgname & lgpassword
+        
         PARAMS_1 = {
         "action": "login",
         "lgname": "EkWikiBot",
@@ -188,7 +183,6 @@ def on_message(bot, channel, sender, message):
 
         R = S.post(URL, data=PARAMS_1)
 
-# Step 3: GET request to fetch CSRF token
         PARAMS_2 = {
             "action": "query",
             "meta": "tokens",
@@ -214,7 +208,7 @@ def on_message(bot, channel, sender, message):
             R = S.post(URL, data=PARAMS_3)
             DATA = R.json()
 
-            bot.send_message(channel, "Block request sent. You may want to check " + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the block worked.")
+            bot.send_message(channel, "Block request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the block worked.")
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
         
@@ -278,9 +272,68 @@ def on_message(bot, channel, sender, message):
         try:
             R = S.post(URL, data=PARAMS_3)
             DATA = R.json()
-            bot.send_message(channel, "Unblock request sent. You may want to check " + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the unblock worked.")
+            bot.send_message(channel, "Unblock request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the unblock worked.")
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
+            
+            
+    if message.lower().startswith('!delete') and sender in stewards:
+       arg = message.split(' ')
+       wiki = arg[1]
+       page = arg[2]
+       reason = arg[3]
+        
+       S = requests.Session()
+
+       URL = "https://" + wiki + ".miraheze.org/w/api.php"
+       PARAMS_0 = {
+           "action": "query",
+           "meta": "tokens",
+           "type": "login",
+           "format": "json"
+       }
+
+       R = S.get(url=URL, params=PARAMS_0)
+       DATA = R.json()
+
+       LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
+        
+       PARAMS_1 = {
+        "action": "login",
+        "lgname": "EkWikiBot",
+        "lgpassword": "EkBot@3gf15cqhonnbgpg20u304lva02fncvia",
+        "lgtoken": LOGIN_TOKEN,
+        "format": "json"
+       }
+
+       R = S.post(URL, data=PARAMS_1)
+
+       PARAMS_2 = {
+           "action": "query",
+           "meta": "tokens",
+           "format": "json"
+       }
+
+       R = S.get(url=URL, params=PARAMS_2)
+       DATA = R.json()
+
+       CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
+        
+       PARAMS_3 = {
+           'action': "delete",
+           'title': page,
+           'reason': "Requested by " + sender + " Reason: " + reason,
+           'token': CSRF_TOKEN,
+           'format': "json"
+       }
+
+       try:
+        R = S.post(URL, data=PARAMS_3)
+        DATA = R.json()
+        bot.send_message(channel, "The delete request was sent. You should check the wiki to make sure the page was deleted."
+       except:
+         bot.send_message(channel, "An unexpected error occured. Did you type the wiki or page incorrectly? Do I have admin rights on that wiki?")
+        
 def on_pm(bot, sender, message):
     global topic
     global nick
