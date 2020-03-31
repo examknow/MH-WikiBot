@@ -330,7 +330,7 @@ def on_message(bot, channel, sender, message):
        try:
         R = S.post(URL, data=PARAMS_3)
         DATA = R.json()
-        bot.send_message(channel, "The delete request was sent. You should check the wiki to make sure the page was deleted."
+        bot.send_message(channel, "The delete request was sent. You should check the wiki to make sure the page was deleted.")
        except:
          bot.send_message(channel, "An unexpected error occured. Did you type the wiki or page incorrectly? Do I have admin rights on that wiki?")
         
