@@ -17,6 +17,7 @@ greetings = [
 ]
 owapikey = '' #place an api key for open weather map here
 admins = ['Examknow', 'freenode-staff']
+stewards = ['Examknow', 'RhinosF1', 'JohnLewis', 'Voidwalker', 'Reception123']
 ##FUNCTION FLAGS - SET TO 1 TO ENABLE
 greetingsbot = 0
 weatherbot = 0
@@ -151,7 +152,7 @@ def on_message(bot, channel, sender, message):
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
             bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?") 
     
-    if message.lower().startswith('!blockuser'):
+    if message.lower().startswith('!blockuser') and sender in stewards:
         arg = message.split(' ')
         wiki = arg[1]
         user = arg[2]
