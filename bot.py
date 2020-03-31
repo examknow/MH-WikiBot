@@ -212,7 +212,7 @@ def on_message(bot, channel, sender, message):
         R = S.post(URL, data=PARAMS_3)
         DATA = R.json()
 
-        bot.send_message(channel, "Block request sent. You may want to check " + URL + "/wiki/Special:BlockList/" + user + " to confirm that the block worked."
+        bot.send_message(channel, "Block request sent. You may want to check " + URL + "/wiki/Special:BlockList/" + user + " to confirm that the block worked.")
            
 def on_pm(bot, sender, message):
     global topic
