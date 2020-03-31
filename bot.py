@@ -209,11 +209,14 @@ def on_message(bot, channel, sender, message):
             "token": CSRF_TOKEN,
             "format": "json"
         }
+    
+        try:
+            R = S.post(URL, data=PARAMS_3)
+            DATA = R.json()
 
-        R = S.post(URL, data=PARAMS_3)
-        DATA = R.json()
-
-        bot.send_message(channel, "Block request sent. You may want to check " + URL + "/wiki/Special:BlockList/" + user + " to confirm that the block worked.")
+            bot.send_message(channel, "Block request sent. You may want to check " + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the block worked.")
+        except:
+            bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
         
     if message.lower().startswith('!unblockuser') and sender in stewards:
         arg = message.split(' ')
@@ -272,11 +275,12 @@ def on_message(bot, channel, sender, message):
             "format": "json"
         }
 
-        R = S.post(URL, data=PARAMS_3)
-        DATA = R.json()
-
-        bot.send_message(channel, "Unblock request sent. You may want to check " + URL + "/wiki/Special:BlockList/" + user + " to confirm that the block worked.")
-           
+        try:
+            R = S.post(URL, data=PARAMS_3)
+            DATA = R.json()
+            bot.send_message(channel, "Unblock request sent. You may want to check " + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the unblock worked.")
+        except:
+            bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
 def on_pm(bot, sender, message):
     global topic
     global nick
