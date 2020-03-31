@@ -152,11 +152,14 @@ def on_message(bot, channel, sender, message):
             bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?") 
     
     if message.lower().startswith('!blockuser'):
+        arg = message.split(' ')
+        wiki = arg[1]
+        user = arg[2]
 
 
         S = requests.Session()
 
-        URL = "https://exambot.miraheze.org/w/api.php"
+        URL = "https://" + wiki + ".miraheze.org/w/api.php"
 
 # Step 1: GET request to fetch login token
         PARAMS_0 = {
@@ -176,8 +179,8 @@ def on_message(bot, channel, sender, message):
 # (https://www.mediawiki.org/wiki/Special:BotPasswords) for lgname & lgpassword
         PARAMS_1 = {
         "action": "login",
-        "lgname": "Examknow@WikiBot",
-        "lgpassword": "hg5cnhdg6gjdmrqo673hfkhar026ucb0",
+        "lgname": "EkWikiBot",
+        "lgpassword": "EkBot@3gf15cqhonnbgpg20u304lva02fncvia",
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
@@ -199,9 +202,9 @@ def on_message(bot, channel, sender, message):
 # Step 4: POST request to block user
         PARAMS_3 = {
             "action": "block",
-            "user": "Examknow",
+            "user": user,
             "expiry": "infinite",
-            "reason": "Time out",
+            "reason": "Per request on IRC from " + sender,
             "token": CSRF_TOKEN,
             "format": "json"
         }
@@ -209,7 +212,7 @@ def on_message(bot, channel, sender, message):
         R = S.post(URL, data=PARAMS_3)
         DATA = R.json()
 
-        bot.send_message(channel, DATA)
+        bot.send_message(channel, "Block request sent. You may want to check " + URL + "/wiki/Special:BlockList/" + user + " to confirm that the block worked."
            
 def on_pm(bot, sender, message):
     global topic
