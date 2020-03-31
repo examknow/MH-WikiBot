@@ -156,7 +156,7 @@ def on_message(bot, channel, sender, message):
 
         S = requests.Session()
 
-        URL = "https://test.wikipedia.org/w/api.php"
+        URL = "https://exambot.miraheze.org/w/api.php"
 
 # Step 1: GET request to fetch login token
         PARAMS_0 = {
@@ -176,8 +176,8 @@ def on_message(bot, channel, sender, message):
 # (https://www.mediawiki.org/wiki/Special:BotPasswords) for lgname & lgpassword
         PARAMS_1 = {
         "action": "login",
-        "lgname": "your_bot_username",
-        "lgpassword": "your_bot_password",
+        "lgname": "Examknow@WikiBot",
+        "lgpassword": "hg5cnhdg6gjdmrqo673hfkhar026ucb0",
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
