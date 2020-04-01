@@ -278,13 +278,15 @@ def on_message(bot, channel, sender, message):
             
             
     if message.lower().startswith('!delete') and sender in stewards:
-       arg = message.split(' ')
-       wiki = arg[1]
-       page = arg[2]
-       if arg[3] == '':
-        bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
-       else:
-        reason = arg[3]
+       try:
+            arg = message.split(' ')
+            wiki = arg[1]
+            page = arg[2]
+            reason = arg[3]
+            
+        except IndexError:
+            bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
+            return
         
        S = requests.Session()
 
