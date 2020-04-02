@@ -283,7 +283,6 @@ def on_message(bot, channel, sender, message):
             wiki = arg[1]
             page = arg[2]
             reason = arg[3]
-            
        except:
             bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
             return
