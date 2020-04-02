@@ -389,7 +389,7 @@ def on_message(bot, channel, sender, message):
             "action": "edit",
             "title": "TestLogPage",
             "summary": message + "(" + sender + ")",
-            "appendtext": "* " + sender + ": " + message,
+            "appendtext": "\n* " + sender + ": " + message,
             "token": CSRF_TOKEN,
             "format": "json"
         }
