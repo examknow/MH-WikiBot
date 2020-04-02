@@ -391,7 +391,7 @@ def on_message(bot, channel, sender, message):
             "summary": message + "(" + sender + ")",
             "appendtext": "\n* " + sender + ": " + message,
             "token": CSRF_TOKEN,
-            "bot": true,
+            "bot": "true",
             "format": "json"
         }
 
