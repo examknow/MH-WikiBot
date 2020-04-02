@@ -176,7 +176,7 @@ def on_message(bot, channel, sender, message):
         PARAMS_1 = {
         "action": "login",
         "lgname": "EkWikiBot",
-        "lgpassword": "EkBot@3gf15cqhonnbgpg20u304lva02fncvia",
+        "lgpassword": "EkBot-No-Flood@309d7u6qc4uivldpj89qhkkmjk9o3rcb",
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
@@ -242,7 +242,7 @@ def on_message(bot, channel, sender, message):
         PARAMS_1 = {
         "action": "login",
         "lgname": "EkWikiBot",
-        "lgpassword": "EkBot@3gf15cqhonnbgpg20u304lva02fncvia",
+        "lgpassword": "EkBot-No-Flood@309d7u6qc4uivldpj89qhkkmjk9o3rcb",
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
@@ -306,7 +306,7 @@ def on_message(bot, channel, sender, message):
        PARAMS_1 = {
         "action": "login",
         "lgname": "EkWikiBot",
-        "lgpassword": "EkBot@3gf15cqhonnbgpg20u304lva02fncvia",
+        "lgpassword": "EkBot-No-Flood@309d7u6qc4uivldpj89qhkkmjk9o3rcb",
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
        }
