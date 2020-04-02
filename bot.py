@@ -152,11 +152,24 @@ def on_message(bot, channel, sender, message):
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
             bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?") 
     
+    if message.lower().startswith('!ca')
+        try:
+            arg = message.split(' ')
+            target = arg[1]
+        except:
+            bot.send_message(channel, "Syntax is !ca <user>")
+            return
+        bot.send_message(channel, "https://meta.miraheze.org/wiki/Special:CentralAuth/" + target)
+    
     if message.lower().startswith('!blockuser') and sender in stewards:
-        arg = message.split(' ')
-        wiki = arg[1]
-        user = arg[2]
-        reason = arg[3]
+        try:
+            arg = message.split(' ')
+            wiki = arg[1]
+            user = arg[2]
+            reason = arg[3]
+        except:
+            bot.send_message(channel, "Syntax is !blockuser <wiki> <user> <reason>")
+            return
 
         S = requests.Session()
 
@@ -214,10 +227,14 @@ def on_message(bot, channel, sender, message):
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
         
     if message.lower().startswith('!unblockuser') and sender in stewards:
-        arg = message.split(' ')
-        wiki = arg[1]
-        user = arg[2]
-        reason = arg[3]
+        try:
+            arg = message.split(' ')
+            wiki = arg[1]
+            user = arg[2]
+            reason = arg[3]
+        except:
+            bot.send_message(channel, "Syntax is !unblockuser <wiki> <user> <reason>")
+            return
 
         S = requests.Session()
 
