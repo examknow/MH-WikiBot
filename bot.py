@@ -340,8 +340,7 @@ def on_message(bot, channel, sender, message):
 
     if message.lower().startswith('!log') and sender in stewards:
         arg = message.split(' ')
-        wiki = arg[1]
-        message = arg[2]
+        message = arg[1]
 
         S = requests.Session()
 
