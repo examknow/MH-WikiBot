@@ -152,7 +152,7 @@ def on_message(bot, channel, sender, message):
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
             bot.send_message(channel, "An error occured. Did you type the wiki incorrectly? Does the user exist?") 
     
-    if message.lower().startswith('!ca')
+    if message.lower().startswith('!ca'):
         try:
             arg = message.split(' ')
             target = arg[1]
