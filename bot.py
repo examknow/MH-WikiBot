@@ -170,10 +170,7 @@ def on_message(bot, channel, sender, message):
         elif len(arg) > 3:
             wiki = arg[1]
             user = arg[2]
-            reason = ''
-            while x < len(arg):
-                reason = reason + " " + arg[x]
-                x = x + 1
+            reason = message.split(user, 1)[1]
         else:
             bot.send_message(channel, "Syntax is !blockuser <wiki> <user> <reason>")
             return
