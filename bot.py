@@ -181,8 +181,12 @@ def on_message(bot, channel, sender, message):
             "format": "json"
         }
 
-        R = S.get(url=URL, params=PARAMS_0)
-        DATA = R.json()
+        try:
+            R = S.get(url=URL, params=PARAMS_0)
+            DATA = R.json()
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
         LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
         
@@ -194,7 +198,10 @@ def on_message(bot, channel, sender, message):
         "format": "json"
         }
 
-        R = S.post(URL, data=PARAMS_1)
+        try:
+            R = S.post(URL, data=PARAMS_1)
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to login to the wiki.")
 
         PARAMS_2 = {
             "action": "query",
@@ -202,8 +209,12 @@ def on_message(bot, channel, sender, message):
             "format": "json"
         }
 
-        R = S.get(url=URL, params=PARAMS_2)
-        DATA = R.json()
+        try:
+            R = S.get(url=URL, params=PARAMS_2)
+            DATA = R.json()
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
         CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
 
@@ -225,6 +236,7 @@ def on_message(bot, channel, sender, message):
             bot.send_message(channel, "Block request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the block worked.")
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
+            return
         
     if message.lower().startswith('!unblockuser') and sender in stewards:
         try:
@@ -248,8 +260,12 @@ def on_message(bot, channel, sender, message):
             "format": "json"
         }
 
-        R = S.get(url=URL, params=PARAMS_0)
-        DATA = R.json()
+        try:
+            R = S.get(url=URL, params=PARAMS_0)
+            DATA = R.json()
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
         LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
 
@@ -263,8 +279,11 @@ def on_message(bot, channel, sender, message):
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
-
-        R = S.post(URL, data=PARAMS_1)
+        try:
+            R = S.post(URL, data=PARAMS_1)
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
 # Step 3: GET request to fetch CSRF token
         PARAMS_2 = {
@@ -273,8 +292,12 @@ def on_message(bot, channel, sender, message):
             "format": "json"
         }
 
-        R = S.get(url=URL, params=PARAMS_2)
-        DATA = R.json()
+        try:
+            R = S.get(url=URL, params=PARAMS_2)
+            DATA = R.json()
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
         CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
 
@@ -314,9 +337,12 @@ def on_message(bot, channel, sender, message):
            "type": "login",
            "format": "json"
        }
-
-       R = S.get(url=URL, params=PARAMS_0)
-       DATA = R.json()
+       try:
+            R = S.get(url=URL, params=PARAMS_0)
+            DATA = R.json()
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
        LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
         
@@ -328,7 +354,11 @@ def on_message(bot, channel, sender, message):
         "format": "json"
        }
 
-       R = S.post(URL, data=PARAMS_1)
+       try:
+            R = S.post(URL, data=PARAMS_1)
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
        PARAMS_2 = {
            "action": "query",
@@ -336,8 +366,12 @@ def on_message(bot, channel, sender, message):
            "format": "json"
        }
 
-       R = S.get(url=URL, params=PARAMS_2)
-       DATA = R.json()
+       try:
+            R = S.get(url=URL, params=PARAMS_2)
+            DATA = R.json()
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
        CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
         
@@ -372,8 +406,12 @@ def on_message(bot, channel, sender, message):
             "format": "json"
         }
 
-        R = S.get(url=URL, params=PARAMS_0)
-        DATA = R.json()
+        try:
+            R = S.get(url=URL, params=PARAMS_0)
+            DATA = R.json()
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
         LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
 
@@ -387,8 +425,11 @@ def on_message(bot, channel, sender, message):
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
-
-        R = S.post(URL, data=PARAMS_1)
+        try:
+            R = S.post(URL, data=PARAMS_1)
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
 # Step 3: GET request to fetch CSRF token
         PARAMS_2 = {
@@ -397,8 +438,12 @@ def on_message(bot, channel, sender, message):
             "format": "json"
         }
 
-        R = S.get(url=URL, params=PARAMS_2)
-        DATA = R.json()
+        try:
+            R = S.get(url=URL, params=PARAMS_2)
+            DATA = R.json()
+        except:
+            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+            return
 
         CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
 
