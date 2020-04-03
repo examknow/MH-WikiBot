@@ -243,15 +243,19 @@ def on_message(bot, channel, sender, message):
             return
         
     if message.lower().startswith('!unblockuser') and sender in stewards:
-        try:
-            arg = message.split(' ')
+        arg = message.split(' ')
+        if len(arg) == 3:
             wiki = arg[1]
             user = arg[2]
             reason = arg[3]
-        except:
-            bot.send_message(channel, "Syntax is !unblockuser <wiki> <user> <reason>")
+        elif len(arg) > 3:
+            wiki = arg[1]
+            user = arg[2]
+            reason = message.split(user, 1)[1]
+        else:
+            bot.send_message(channel, "Syntax is !blockuser <wiki> <user> <reason>")
             return
-
+        
         S = requests.Session()
 
         URL = "https://" + wiki + ".miraheze.org/w/api.php"
@@ -323,12 +327,17 @@ def on_message(bot, channel, sender, message):
             
             
     if message.lower().startswith('!delete') and sender in stewards:
-       try:
-            arg = message.split(' ')
+        
+        arg = message.split(' ')
+        if len(arg) == 3:
             wiki = arg[1]
             page = arg[2]
             reason = arg[3]
-       except:
+        elif len(arg) > 3:
+            wiki = arg[1]
+            page = arg[2]
+            reason = message.split(user, 1)[1]
+        else:
             bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
             return
         
@@ -395,6 +404,16 @@ def on_message(bot, channel, sender, message):
          bot.send_message(channel, "An unexpected error occured. Did you type the wiki or page incorrectly? Do I have admin rights on that wiki?")
 
     if message.lower().startswith('!log') and sender in stewards:
+        
+        arg = message.split(' ')
+        if len(arg) == 1:
+            message = arg[1]
+        elif len(arg) > 1:
+            reason = message.split('!log', 1)[1]
+        else:
+            bot.send_message(channel, "Syntax is !log <message>")
+            return
+        
         arg = message.split(' ')
         message = arg[1]
 
