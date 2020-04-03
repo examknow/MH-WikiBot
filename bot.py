@@ -340,7 +340,7 @@ def on_message(bot, channel, sender, message):
        try:
             R = S.get(url=URL, params=PARAMS_0)
             DATA = R.json()
-        except:
+       except:
             bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
             return
 
@@ -356,7 +356,7 @@ def on_message(bot, channel, sender, message):
 
        try:
             R = S.post(URL, data=PARAMS_1)
-        except:
+       except:
             bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
             return
 
@@ -369,7 +369,7 @@ def on_message(bot, channel, sender, message):
        try:
             R = S.get(url=URL, params=PARAMS_2)
             DATA = R.json()
-        except:
+       except:
             bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
             return
 
