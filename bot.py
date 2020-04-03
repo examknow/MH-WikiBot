@@ -162,20 +162,19 @@ def on_message(bot, channel, sender, message):
         bot.send_message(channel, "https://meta.miraheze.org/wiki/Special:CentralAuth/" + target)
     
     if message.lower().startswith('!blockuser') and sender in stewards:
-        try:
-            arg = message.split(' ')
-            if len(arg) == 3:
-                wiki = arg[1]
-                user = arg[2]
-                reason = arg[3]
-            elif len(arg) > 3:
-                wiki = arg[1]
-                user = arg[2]
-                reason = ''
+        arg = message.split(' ')
+        if len(arg) == 3:
+            wiki = arg[1]
+            user = arg[2]
+            reason = arg[3]
+        elif len(arg) > 3:
+            wiki = arg[1]
+            user = arg[2]
+            reason = ''
                 while x < len(arg):
                     reason = reason + " " + arg[x]
                     x = x + 1
-        except:
+        else:
             bot.send_message(channel, "Syntax is !blockuser <wiki> <user> <reason>")
             return
 
