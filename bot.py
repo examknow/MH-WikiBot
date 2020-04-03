@@ -164,9 +164,17 @@ def on_message(bot, channel, sender, message):
     if message.lower().startswith('!blockuser') and sender in stewards:
         try:
             arg = message.split(' ')
-            wiki = arg[1]
-            user = arg[2]
-            reason = arg[3]
+            if len(arg) == 3:
+                wiki = arg[1]
+                user = arg[2]
+                reason = arg[3]
+            elif len(arg) > 3:
+                wiki = arg[1]
+                user = arg[2]
+                reason = ''
+                while x < len(arg):
+                    reason = reason + " " + arg[x]
+                    x = x + 1
         except:
             bot.send_message(channel, "Syntax is !blockuser <wiki> <user> <reason>")
             return
@@ -223,7 +231,7 @@ def on_message(bot, channel, sender, message):
             "action": "block",
             "user": user,
             "expiry": "infinite",
-            "reason": "{{BotBlock|user=" + sender + "|reason=" + reason + "}}",
+            "reason": "{{BotBlocked|user=" + sender + "|reason=" + reason + "}}",
             "bot": "false",
             "token": CSRF_TOKEN,
             "format": "json"
