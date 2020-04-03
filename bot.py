@@ -171,9 +171,9 @@ def on_message(bot, channel, sender, message):
             wiki = arg[1]
             user = arg[2]
             reason = ''
-                while x < len(arg):
-                    reason = reason + " " + arg[x]
-                    x = x + 1
+            while x < len(arg):
+                reason = reason + " " + arg[x]
+                x = x + 1
         else:
             bot.send_message(channel, "Syntax is !blockuser <wiki> <user> <reason>")
             return
