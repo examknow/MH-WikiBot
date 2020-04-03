@@ -43,6 +43,8 @@ def getinfo():
     global admins
     global owapikey
     global nspassword
+    global flagpass
+    global nonflagpass
     infofile = open('settings.csv', 'r')
     for line in infofile:
         setting = line.split(';')
@@ -74,6 +76,10 @@ def getinfo():
             admins = admins.split(',')
         if setting[0] == 'nspassword':
             nspassword = setting[1]
+        if setting[0] == 'flagpass':
+            flagpass = setting[1]
+	if setting[0] == 'nonflagpass':
+            nonflagpass = setting[1]
 def on_connect(bot):
     bot.set_nick(nick)
     bot.send_user_packet(nick)
@@ -99,6 +105,8 @@ def on_message(bot, channel, sender, message):
     global cashortbot
     global admins
     global owapikey
+    global flagpass
+    global nonflagpass
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
         wiki = arg[1]
@@ -197,7 +205,7 @@ def on_message(bot, channel, sender, message):
         PARAMS_1 = {
         "action": "login",
         "lgname": "EkWikiBot",
-        "lgpassword": "EkBot-No-Flood@309d7u6qc4uivldpj89qhkkmjk9o3rcb",
+        "lgpassword": nonflagpass,
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
@@ -283,7 +291,7 @@ def on_message(bot, channel, sender, message):
         PARAMS_1 = {
         "action": "login",
         "lgname": "EkWikiBot",
-        "lgpassword": "EkBot-No-Flood@309d7u6qc4uivldpj89qhkkmjk9o3rcb",
+        "lgpassword": nonflagpass,
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
@@ -341,66 +349,66 @@ def on_message(bot, channel, sender, message):
             bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
             return
         
-       S = requests.Session()
+        S = requests.Session()
 
-       URL = "https://" + wiki + ".miraheze.org/w/api.php"
-       PARAMS_0 = {
-           "action": "query",
-           "meta": "tokens",
-           "type": "login",
-           "format": "json"
-       }
-       try:
-            R = S.get(url=URL, params=PARAMS_0)
-            DATA = R.json()
-       except:
-            bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
-            return
+        URL = "https://" + wiki + ".miraheze.org/w/api.php"
+        PARAMS_0 = {
+            "action": "query",
+            "meta": "tokens",
+            "type": "login",
+            "format": "json"
+        }
+        try:
+             R = S.get(url=URL, params=PARAMS_0)
+             DATA = R.json()
+        except:
+             bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
+             return
 
-       LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
+        LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
         
-       PARAMS_1 = {
-        "action": "login",
-        "lgname": "EkWikiBot",
-        "lgpassword": "EkBot-No-Flood@309d7u6qc4uivldpj89qhkkmjk9o3rcb",
-        "lgtoken": LOGIN_TOKEN,
-        "format": "json"
-       }
+        PARAMS_1 = {
+         "action": "login",
+         "lgname": "EkWikiBot",
+         "lgpassword": nonflagpass,
+         "lgtoken": LOGIN_TOKEN,
+         "format": "json"
+        }
 
-       try:
-            R = S.post(URL, data=PARAMS_1)
-       except:
+        try:
+             R = S.post(URL, data=PARAMS_1)
+        except:
             bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
             return
 
-       PARAMS_2 = {
-           "action": "query",
-           "meta": "tokens",
-           "format": "json"
-       }
+        PARAMS_2 = {
+            "action": "query",
+            "meta": "tokens",
+            "format": "json"
+        }
 
-       try:
-            R = S.get(url=URL, params=PARAMS_2)
-            DATA = R.json()
-       except:
+        try:
+             R = S.get(url=URL, params=PARAMS_2)
+             DATA = R.json()
+        except:
             bot.send_message(channel, "Catostrophic Error! Unable to connect to the wiki.")
             return
 
-       CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
+        CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
         
-       PARAMS_3 = {
-           'action': "delete",
-           'title': page,
-           'reason': "Requested by " + sender + " Reason: " + reason,
-           'token': CSRF_TOKEN,
-           'format': "json"
-       }
+        PARAMS_3 = {
+            'action': "delete",
+            'title': page,
+            'reason': "Requested by " + sender + " Reason: " + reason,
+            'token': CSRF_TOKEN,
+            'format': "json"
+        }
 
-       try:
-        R = S.post(URL, data=PARAMS_3)
-        DATA = R.json()
-        bot.send_message(channel, "The delete request was sent. You should check the wiki to make sure the page was deleted.")
-       except:
+        try:
+         R = S.post(URL, data=PARAMS_3)
+         DATA = R.json()
+         bot.send_message(channel, "The delete request was sent. You should check the wiki to make sure the page was deleted.")
+        except:
          bot.send_message(channel, "An unexpected error occured. Did you type the wiki or page incorrectly? Do I have admin rights on that wiki?")
 
     if message.lower().startswith('!log') and sender in stewards:
@@ -414,9 +422,6 @@ def on_message(bot, channel, sender, message):
             bot.send_message(channel, "Syntax is !log <message>")
             return
         
-        arg = message.split(' ')
-        message = arg[1]
-
         S = requests.Session()
 
         URL = "https://test.miraheze.org/w/api.php"
@@ -444,7 +449,7 @@ def on_message(bot, channel, sender, message):
         PARAMS_1 = {
         "action": "login",
         "lgname": "EkWikiBot",
-        "lgpassword": "EkBot@3gf15cqhonnbgpg20u304lva02fncvia",
+        "lgpassword": flagpass,
         "lgtoken": LOGIN_TOKEN,
         "format": "json"
         }
