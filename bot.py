@@ -223,7 +223,7 @@ def on_message(bot, channel, sender, message):
             "action": "block",
             "user": user,
             "expiry": "infinite",
-            "reason": "Requested by " + sender + " Reason: " + reason,
+            "reason": "{{BotBlock|user=" + sender + "|reason=" + reason + "}}",
             "bot": "false",
             "token": CSRF_TOKEN,
             "format": "json"
