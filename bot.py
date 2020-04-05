@@ -17,7 +17,7 @@ greetings = [
 ]
 owapikey = '' #place an api key for open weather map here
 admins = ['Examknow', 'freenode-staff']
-stewards = ['Examknow', 'RhinosF1', 'JohnLewis', 'Voidwalker', 'Reception123']
+stewards = ['miraheze/Examknow', 'miraheze/RhinosF1', 'miraheze/John', 'wikipedia/The-Voidwalker', 'miraheze/Reception123']
 ##FUNCTION FLAGS - SET TO 1 TO ENABLE
 greetingsbot = 0
 weatherbot = 0
@@ -92,6 +92,8 @@ def on_welcome(bot):
     bot.join_channel('#SigmaBot')
     print('Joined channels')
 def on_message(bot, channel, sender, message):
+    sendernick = sender.split("!")[0]
+    senderhost = sender.split("@")[1]
     global topic
     global nick
     global lastgreeter
@@ -169,7 +171,7 @@ def on_message(bot, channel, sender, message):
             return
         bot.send_message(channel, "https://meta.miraheze.org/wiki/Special:CentralAuth/" + target)
     
-    if message.lower().startswith('!blockuser') and sender in stewards:
+    if message.lower().startswith('!blockuser') and senderhost in stewards:
         arg = message.split(' ')
         if len(arg) == 3:
             wiki = arg[1]
@@ -250,7 +252,7 @@ def on_message(bot, channel, sender, message):
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
             return
         
-    if message.lower().startswith('!unblockuser') and sender in stewards:
+    if message.lower().startswith('!unblockuser') and senderhost in stewards:
         arg = message.split(' ')
         if len(arg) == 3:
             wiki = arg[1]
