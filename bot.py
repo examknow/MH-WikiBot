@@ -360,6 +360,7 @@ def on_message(bot, channel, sender, message):
             	reason = arg[3]
 	    except:
             	bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
+		return
         elif len(arg) > 3:
 	    try:
             	wiki = arg[1]
@@ -367,6 +368,7 @@ def on_message(bot, channel, sender, message):
             	reason = message.split(page, 1)[1]
 	    except:
             	bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
+		return
         else:
             bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
             return
