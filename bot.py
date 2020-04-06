@@ -354,13 +354,19 @@ def on_message(bot, channel, sender, message):
         
         arg = message.split(' ')
         if len(arg) == 3:
-            wiki = arg[1]
-            page = arg[2]
-            reason = arg[3]
+	    try:
+            	wiki = arg[1]
+            	page = arg[2]
+            	reason = arg[3]
+	    except:
+            	bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
         elif len(arg) > 3:
-            wiki = arg[1]
-            page = arg[2]
-            reason = message.split(page, 1)[1]
+	    try:
+            	wiki = arg[1]
+            	page = arg[2]
+            	reason = message.split(page, 1)[1]
+	    except:
+            	bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
         else:
             bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
             return
@@ -415,7 +421,7 @@ def on_message(bot, channel, sender, message):
         PARAMS_3 = {
             'action': "delete",
             'title': page,
-            'reason': "Requested by " + sender + " Reason: " + reason,
+            'reason': "Requested by " + sendernick + " Reason: " + reason,
             'token': CSRF_TOKEN,
             'format': "json"
         }
@@ -496,8 +502,8 @@ def on_message(bot, channel, sender, message):
         PARAMS_3 = {
             "action": "edit",
             "title": "TestLogPage",
-            "summary": message + "(" + sender + ")",
-            "appendtext": "\n* " + sender + ": " + message,
+            "summary": message + "(" + sendernick + ")",
+            "appendtext": "\n* " + sendernick + ": " + message,
             "token": CSRF_TOKEN,
             "bot": "true",
             "format": "json"
