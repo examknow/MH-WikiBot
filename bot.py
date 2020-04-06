@@ -360,7 +360,7 @@ def on_message(bot, channel, sender, message):
         elif len(arg) > 3:
             wiki = arg[1]
             page = arg[2]
-            reason = message.split(user, 1)[1]
+            reason = message.split(page, 1)[1]
         else:
             bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
             return
