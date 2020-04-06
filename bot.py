@@ -434,7 +434,7 @@ def on_message(bot, channel, sender, message):
         if len(arg) == 1:
             message = arg[1]
         elif len(arg) > 1:
-            reason = message.split('!log', 1)[1]
+            message = message.split('!log', 1)[1]
         else:
             bot.send_message(channel, "Syntax is !log <message>")
             return
