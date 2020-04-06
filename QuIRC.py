@@ -283,6 +283,13 @@ class IRCConnection:
 
 
         self.send_line("JOIN {}".format(channel_name))
+        
+    def op_user(self, target):
+        #Joins a given channel. After the channel is joined, the on_join callback is
+        #called.
+
+
+        self.send_line("mode {} +o :{}".format(channel_name))
 
     def set_nick(self, nick):
         #Sets or changes your link. This should be called before joining channels, but
