@@ -115,6 +115,12 @@ def on_message(bot, channel, sender, message):
     if message.lower().startswith('!opme') and senderhost in chanops:
 	bot.op_user(channel, sender)
 	
+    if message.lower().startswith('!help'):
+	bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
+	
+    if message.lower().startswith('!commands'):
+	bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
+	
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
         wiki = arg[1]
