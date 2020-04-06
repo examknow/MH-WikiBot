@@ -254,6 +254,7 @@ def on_message(bot, channel, sender, message):
             DATA = R.json()
 
             bot.send_message(channel, "Block request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the block worked.")
+	    bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just blocked ' + user + ' on ' + wiki + 'wiki for ' + reason)
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
             return
@@ -338,6 +339,7 @@ def on_message(bot, channel, sender, message):
             R = S.post(URL, data=PARAMS_3)
             DATA = R.json()
             bot.send_message(channel, "Unblock request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the unblock worked.")
+	    bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just (un)blocked ' + user + ' on ' + wiki + 'wiki for ' + reason)
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
             
@@ -416,6 +418,7 @@ def on_message(bot, channel, sender, message):
          R = S.post(URL, data=PARAMS_3)
          DATA = R.json()
          bot.send_message(channel, "The delete request was sent. You should check the wiki to make sure the page was deleted.")
+	 bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just deleted ' + page + ' on ' + wiki + 'wiki for ' + reason)
         except:
          bot.send_message(channel, "An unexpected error occured. Did you type the wiki or page incorrectly? Do I have admin rights on that wiki?")
 
