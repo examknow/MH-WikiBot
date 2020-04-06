@@ -351,7 +351,6 @@ def on_message(bot, channel, sender, message):
             
             
     if message.lower().startswith('!delete') and senderhost in stewards:
-        
         arg = message.split(' ')
         if len(arg) == 3:
 	    try:
@@ -437,7 +436,6 @@ def on_message(bot, channel, sender, message):
          bot.send_message(channel, "An unexpected error occured. Did you type the wiki or page incorrectly? Do I have admin rights on that wiki?")
 
     if message.lower().startswith('!log') and senderhost in stewards:
-        
         arg = message.split(' ')
         if len(arg) == 1:
             message = arg[1]
