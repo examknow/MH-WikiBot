@@ -3,7 +3,7 @@ name: New Function
 about: Use this to suggest a new function
 title: "[NEW FUNCTION]"
 labels: enhancement
-assignees: RhinosF1
+assignees: ''
 
 ---
 
