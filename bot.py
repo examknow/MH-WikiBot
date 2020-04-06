@@ -92,8 +92,6 @@ def on_welcome(bot):
     bot.join_channel('#SigmaBot')
     print('Joined channels')
 def on_message(bot, channel, sender, message):
-    sendernick = sender.split("!")[0]
-    senderhost = sender.split("@")[1]
     global topic
     global nick
     global lastgreeter
@@ -109,6 +107,8 @@ def on_message(bot, channel, sender, message):
     global owapikey
     global flagpass
     global nonflagpass
+    sendernick = sender.split("!")[0]
+    senderhost = sender.split("@")[1]
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
         wiki = arg[1]
@@ -237,7 +237,7 @@ def on_message(bot, channel, sender, message):
             "action": "block",
             "user": user,
             "expiry": "infinite",
-            "reason": "{{BotBlocked|user=" + sender + "|reason=" + reason + "}}",
+            "reason": "{{BotBlocked|user=" + sendernick + "|reason=" + reason + "}}",
             "bot": "false",
             "token": CSRF_TOKEN,
             "format": "json"
@@ -323,7 +323,7 @@ def on_message(bot, channel, sender, message):
         PARAMS_3 = {
             "action": "unblock",
             "user": user,
-            "reason": "Requested by " + sender + " Reason: " + reason,
+            "reason": "Requested by " + sendernick + " Reason: " + reason,
             "token": CSRF_TOKEN,
             "format": "json"
         }
