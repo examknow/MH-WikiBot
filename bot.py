@@ -18,6 +18,7 @@ greetings = [
 owapikey = '' #place an api key for open weather map here
 admins = ['Examknow', 'freenode-staff']
 stewards = ['miraheze/Examknow', 'miraheze/RhinosF1', 'miraheze/John', 'wikipedia/The-Voidwalker', 'miraheze/Reception123']
+chanops = ['miraheze/Examknow', 'miraheze/RhinosF1', 'miraheze/John', 'wikipedia/The-Voidwalker', 'miraheze/Reception123']
 ##FUNCTION FLAGS - SET TO 1 TO ENABLE
 greetingsbot = 0
 weatherbot = 0
@@ -90,6 +91,7 @@ def on_welcome(bot):
     print('Authed to NickServ')
     time.sleep(10)
     bot.join_channel('#SigmaBot')
+    bot.join_channel('#SigmaBot-logs')
     print('Joined channels')
 def on_message(bot, channel, sender, message):
     global topic
@@ -107,8 +109,12 @@ def on_message(bot, channel, sender, message):
     global owapikey
     global flagpass
     global nonflagpass
+    global chanops
     sendernick = sender.split("!")[0]
     senderhost = sender.split("@")[1]
+    if message.lower().startswith('!opme') and senderhost in chanops:
+	bot.op_user(channel, sender)
+	
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
         wiki = arg[1]
