@@ -116,7 +116,7 @@ def on_message(bot, channel, sender, message):
     global chanops
     sendernick = sender.split("!")[0]
     senderhost = sender.split("@")[1]
-    while true:
+    while True:
 	    url = 'https://stream.wikimedia.org/v2/stream/recentchange'
 	    for event in EventSource(url):
 		    if event.event == 'message':
