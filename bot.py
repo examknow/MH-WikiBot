@@ -114,6 +114,11 @@ def on_message(bot, channel, sender, message):
     senderhost = sender.split("@")[1]
     if message.lower().startswith('!opme') and senderhost in chanops:
 	bot.send_line('MODE ' + channel + ' +o ' + sendernick)
+
+    if message.lower().startswith('!kick') and senderhost in chanops:
+	arg = message.split
+	target = arg[1]
+	bot.send_line('KICK ' + channel + ' ' + target)
 	
     if message.lower().startswith('!help'):
 	bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
