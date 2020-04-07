@@ -567,6 +567,7 @@ bot.on_connect.append(on_connect)
 bot.on_welcome.append(on_welcome)
 bot.on_public_message.append(on_message)
 print('Starting...')
+bot.run_loop()
 
 bot.connect("chat.freenode.net")
 print('Connected')
@@ -591,4 +592,3 @@ for event in EventSource(url):
                 finally:
                         if (sqliteConnection):
                                 sqliteConnection.close()
-bot.run_loop()
