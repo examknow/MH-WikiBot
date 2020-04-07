@@ -4,6 +4,7 @@ import requests
 import re
 import time
 import random
+import json
 import sqlite3
 from sseclient import SSEClient as EventSource
 topic = '' #channel topic for use in channels where quotebot runs
@@ -81,7 +82,7 @@ def getinfo():
             nspassword = setting[1]
         if setting[0] == 'flagpass':
             flagpass = setting[1]
-	if setting[0] == 'nonflagpass':
+        if setting[0] == 'nonflagpass':
             nonflagpass = setting[1]
 def on_connect(bot):
     bot.set_nick(nick)
@@ -94,6 +95,7 @@ def on_welcome(bot):
     time.sleep(10)
     bot.join_channel('#SigmaBot')
     bot.join_channel('#SigmaBot-logs')
+    bot.join_channel('##Examknow')
     print('Joined channels')
 def on_message(bot, channel, sender, message):
     global topic
@@ -115,23 +117,19 @@ def on_message(bot, channel, sender, message):
     sendernick = sender.split("!")[0]
     senderhost = sender.split("@")[1]
     if message.lower().startswith('!opme') and senderhost in chanops:
-		bot.send_line('MODE ' + channel + ' +o ' + sendernick)
+                bot.send_line('MODE ' + channel + ' +o ' + sendernick)
 
     if message.lower().startswith('!deopme') and senderhost in chanops:
-		bot.send_line('MODE ' + channel + ' -o ' + sendernick)
+                bot.send_line('MODE ' + channel + ' -o ' + sendernick)
 
     if message.lower().startswith('!kick') and senderhost in chanops:
-		arg = message.split(' ')
-		target = arg[1]
-		bot.send_line('KICK ' + channel + ' ' + target)
-	
+                arg = message.split(' ')
+                target = arg[1]
+                bot.send_line('KICK ' + channel + ' ' + target)
     if message.lower().startswith('!help'):
-		bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
-	
+                bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
     if message.lower().startswith('!commands'):
-		bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
-
-	
+                bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
         wiki = arg[1]
@@ -271,7 +269,7 @@ def on_message(bot, channel, sender, message):
             DATA = R.json()
 
             bot.send_message(channel, "Block request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the block worked.")
-	    bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just blocked ' + user + ' on ' + wiki + 'wiki for ' + reason)
+            bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just blocked ' + user + ' on ' + wiki + 'wiki for ' + reason)
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
             return
@@ -356,7 +354,7 @@ def on_message(bot, channel, sender, message):
             R = S.post(URL, data=PARAMS_3)
             DATA = R.json()
             bot.send_message(channel, "Unblock request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the unblock worked.")
-	    bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just (un)blocked ' + user + ' on ' + wiki + 'wiki for ' + reason)
+            bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just (un)blocked ' + user + ' on ' + wiki + 'wiki for ' + reason)
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
             
@@ -364,21 +362,21 @@ def on_message(bot, channel, sender, message):
     if message.lower().startswith('!delete') and senderhost in stewards:
         arg = message.split(' ')
         if len(arg) == 3:
-	    try:
+            try:
             	wiki = arg[1]
             	page = arg[2]
             	reason = arg[3]
-	    except:
-            	bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
-		return
+            except:
+                bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
+                return
         elif len(arg) > 3:
-	    try:
+            try:
             	wiki = arg[1]
             	page = arg[2]
             	reason = message.split(page, 1)[1]
-	    except:
-            	bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
-		return
+            except:
+                bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
+       	        return
         else:
             bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
             return
@@ -442,7 +440,7 @@ def on_message(bot, channel, sender, message):
          R = S.post(URL, data=PARAMS_3)
          DATA = R.json()
          bot.send_message(channel, "The delete request was sent. You should check the wiki to make sure the page was deleted.")
-	 bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just deleted ' + page + ' on ' + wiki + 'wiki for ' + reason)
+         bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just deleted ' + page + ' on ' + wiki + 'wiki for ' + reason)
         except:
          bot.send_message(channel, "An unexpected error occured. Did you type the wiki or page incorrectly? Do I have admin rights on that wiki?")
 
@@ -572,26 +570,25 @@ print('Starting...')
 
 bot.connect("chat.freenode.net")
 print('Connected')
-while true:
-	url = 'https://stream.wikimedia.org/v2/stream/recentchange'
-	for event in EventSource(url):
-		if event.event == 'message':
-			try:
-				change = json.loads(event.data)
-			except ValueError:
-				continue
-			try:
-				sqliteConnection = sqlite3.connect('recentchanges.db')
-				cursor = sqliteConnection.cursor()
-				sqlite_select_query = "SELECT * from watched_pages where wiki_name='" + change['wiki'] + "'"
-				cursor.execute(sqlite_select_query)
-				records = cursor.fetchall()
-				if len(records) > 0:
-					bot.send_message('##Examknow', '{user} performed action {type} on {title} Summary: {comment}'.format(**change))
-					cursor.close()
-			except sqlite3.Error as error:
-				print("Failed to read data from sqlite table", error)
-			finally:
-				if (sqliteConnection):
-					sqliteConnection.close()
+url = 'https://stream.wikimedia.org/v2/stream/recentchange'
+for event in EventSource(url):
+	if event.event == 'message':
+                try:
+                        change = json.loads(event.data)
+                except ValueError:
+                        continue
+                try:
+                        sqliteConnection = sqlite3.connect('recentchanges.db')
+                        cursor = sqliteConnection.cursor()
+                        sqlite_select_query = "SELECT * from watched_pages where wiki_name='" + change['wiki'] + "'"
+                        cursor.execute(sqlite_select_query)
+                        records = cursor.fetchall()
+                        if len(records) > 0:
+                                bot.send_message('##Examknow', '{user} performed action {type} on {title} Summary: {comment}'.format(**change))
+                                cursor.close()
+                except sqlite3.Error as error:
+                        print("Failed to read data from sqlite table", error)
+                finally:
+                        if (sqliteConnection):
+                                sqliteConnection.close()
 bot.run_loop()
