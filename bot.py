@@ -97,25 +97,6 @@ def on_welcome(bot):
     bot.join_channel('#SigmaBot-logs')
     bot.join_channel('##Examknow')
     print('Joined channels')
-def on_message(bot, channel, sender, message):
-    global topic
-    global nick
-    global lastgreeter
-    global greetings
-    global greetingsbot
-    global weatherbot
-    global quotebot
-    global linkbot
-    global pingbot
-    global buttbot
-    global cashortbot
-    global admins
-    global owapikey
-    global flagpass
-    global nonflagpass
-    global chanops
-    sendernick = sender.split("!")[0]
-    senderhost = sender.split("@")[1]
     while True:
 	    url = 'https://stream.wikimedia.org/v2/stream/recentchange'
 	    for event in EventSource(url):
@@ -138,8 +119,25 @@ def on_message(bot, channel, sender, message):
                       finally:
                               if (sqliteConnection):
                                         sqliteConnection.close()
-
-
+def on_message(bot, channel, sender, message):
+    global topic
+    global nick
+    global lastgreeter
+    global greetings
+    global greetingsbot
+    global weatherbot
+    global quotebot
+    global linkbot
+    global pingbot
+    global buttbot
+    global cashortbot
+    global admins
+    global owapikey
+    global flagpass
+    global nonflagpass
+    global chanops
+    sendernick = sender.split("!")[0]
+    senderhost = sender.split("@")[1]
     if message.lower().startswith('!opme') and senderhost in chanops:
                 bot.send_line('MODE ' + channel + ' +o ' + sendernick)
 
