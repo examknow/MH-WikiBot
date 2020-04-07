@@ -114,11 +114,11 @@ def on_welcome(bot):
                                 if len(records) > 0:
                                         bot.send_message('##Examknow', '{user} performed action {type} on {title} Summary: {comment}'.format(**change))
                                         cursor.close()
-                      except sqlite3.Error as error:
-                                print("Failed to read data from sqlite table", error)
-                      finally:
-                              if (sqliteConnection):
-                                        sqliteConnection.close()
+                        except sqlite3.Error as error:
+                                  print("Failed to read data from sqlite table", error)
+                        finally:
+                                if (sqliteConnection):
+                                          sqliteConnection.close()
 def on_message(bot, channel, sender, message):
     global topic
     global nick
@@ -589,7 +589,6 @@ bot.on_connect.append(on_connect)
 bot.on_welcome.append(on_welcome)
 bot.on_public_message.append(on_message)
 print('Starting...')
-bot.run_loop()
-
 bot.connect("chat.freenode.net")
 print('Connected')
+bot.run_loop()
