@@ -87,6 +87,29 @@ def getinfo():
 def on_connect(bot):
     bot.set_nick(nick)
     bot.send_user_packet(nick)
+    while true:
+	url = 'https://stream.wikimedia.org/v2/stream/recentchange'
+	for event in EventSource(url):
+		if event.event == 'message':
+                    try:
+                            change = json.loads(event.data)
+                    except ValueError:
+                            continue
+                    try:
+                            sqliteConnection = sqlite3.connect('recentchanges.db')
+                            cursor = sqliteConnection.cursor()
+                            sqlite_select_query = "SELECT * from watched_pages where wiki_name='" + change['wiki'] + "'"
+                            cursor.execute(sqlite_select_query)
+                            records = cursor.fetchall()
+                            if len(records) > 0:
+                                    bot.send_message('##Examknow', '{user} performed action {type} on {title} Summary: {comment}'.format(**change))
+                                    cursor.close()
+                    except sqlite3.Error as error:
+                            print("Failed to read data from sqlite table", error)
+                    finally:
+                            if (sqliteConnection):
+                                    sqliteConnection.close()
+
 
 def on_welcome(bot):
     global nspassword
@@ -571,24 +594,3 @@ bot.run_loop()
 
 bot.connect("chat.freenode.net")
 print('Connected')
-url = 'https://stream.wikimedia.org/v2/stream/recentchange'
-for event in EventSource(url):
-	if event.event == 'message':
-                try:
-                        change = json.loads(event.data)
-                except ValueError:
-                        continue
-                try:
-                        sqliteConnection = sqlite3.connect('recentchanges.db')
-                        cursor = sqliteConnection.cursor()
-                        sqlite_select_query = "SELECT * from watched_pages where wiki_name='" + change['wiki'] + "'"
-                        cursor.execute(sqlite_select_query)
-                        records = cursor.fetchall()
-                        if len(records) > 0:
-                                bot.send_message('##Examknow', '{user} performed action {type} on {title} Summary: {comment}'.format(**change))
-                                cursor.close()
-                except sqlite3.Error as error:
-                        print("Failed to read data from sqlite table", error)
-                finally:
-                        if (sqliteConnection):
-                                sqliteConnection.close()
