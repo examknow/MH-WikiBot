@@ -449,7 +449,6 @@ def on_message(bot, channel, sender, message):
         else:
             bot.send_message(channel, "Syntax is !log <message>")
             return
-        
         S = requests.Session()
 
         URL = "https://test.miraheze.org/w/api.php"
