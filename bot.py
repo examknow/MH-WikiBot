@@ -115,8 +115,11 @@ def on_message(bot, channel, sender, message):
     if message.lower().startswith('!opme') and senderhost in chanops:
 	bot.send_line('MODE ' + channel + ' +o ' + sendernick)
 
+    if message.lower().startswith('!deopme') and senderhost in chanops:
+	bot.send_line('MODE ' + channel + ' -o ' + sendernick)
+
     if message.lower().startswith('!kick') and senderhost in chanops:
-	arg = message.split
+	arg = message.split(' ')
 	target = arg[1]
 	bot.send_line('KICK ' + channel + ' ' + target)
 	
