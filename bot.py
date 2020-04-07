@@ -4,6 +4,8 @@ import requests
 import re
 import time
 import random
+import sqlite3
+from sseclient import SSEClient as EventSource
 topic = '' #channel topic for use in channels where quotebot runs
 nick = 'WikiBotTester'
 bot = QuIRC.IRCConnection()
@@ -113,21 +115,22 @@ def on_message(bot, channel, sender, message):
     sendernick = sender.split("!")[0]
     senderhost = sender.split("@")[1]
     if message.lower().startswith('!opme') and senderhost in chanops:
-	bot.send_line('MODE ' + channel + ' +o ' + sendernick)
+		bot.send_line('MODE ' + channel + ' +o ' + sendernick)
 
     if message.lower().startswith('!deopme') and senderhost in chanops:
-	bot.send_line('MODE ' + channel + ' -o ' + sendernick)
+		bot.send_line('MODE ' + channel + ' -o ' + sendernick)
 
     if message.lower().startswith('!kick') and senderhost in chanops:
-	arg = message.split(' ')
-	target = arg[1]
-	bot.send_line('KICK ' + channel + ' ' + target)
+		arg = message.split(' ')
+		target = arg[1]
+		bot.send_line('KICK ' + channel + ' ' + target)
 	
     if message.lower().startswith('!help'):
-	bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
+		bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
 	
     if message.lower().startswith('!commands'):
-	bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
+		bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
+
 	
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
@@ -569,4 +572,26 @@ print('Starting...')
 
 bot.connect("chat.freenode.net")
 print('Connected')
+while true:
+	url = 'https://stream.wikimedia.org/v2/stream/recentchange'
+	for event in EventSource(url):
+		if event.event == 'message':
+			try:
+				change = json.loads(event.data)
+			except ValueError:
+				continue
+			try:
+				sqliteConnection = sqlite3.connect('recentchanges.db')
+				cursor = sqliteConnection.cursor()
+				sqlite_select_query = "SELECT * from watched_pages where wiki_name='" + change['wiki'] + "'"
+				cursor.execute(sqlite_select_query)
+				records = cursor.fetchall()
+				if len(records) > 0:
+					bot.send_message('##Examknow', '{user} performed action {type} on {title} Summary: {comment}'.format(**change))
+					cursor.close()
+			except sqlite3.Error as error:
+				print("Failed to read data from sqlite table", error)
+			finally:
+				if (sqliteConnection):
+					sqliteConnection.close()
 bot.run_loop()
