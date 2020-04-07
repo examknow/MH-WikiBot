@@ -29,4 +29,4 @@ This update also includes bug fixes and other improvements. This update:
 
 ### Security
 - Fixed a bug that where the bot did not check if the IRC user was logged in
-- For more information please see https://github.com/examknow/MH-WikiBot/security/advisories/GHSA-7hf3-wvp8-34r9
+- For more information please see https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-5302
