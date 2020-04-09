@@ -1,11 +1,11 @@
 from distutils.core import setup
 setup(
-    name = "QuIRC",
+    name = "MH-WikiBot",
     py_modules = ["QuIRC"],
-    version = "BetaV1",
-    description = "Quick auto-logging IRC Bot",
-    author = "RhinosF1",
-    author_email = "quircbot@gmail.com"
+    version = "0.1",
+    description = "IRC Bot for interacting with Miraheze API",
+    author = "RhinosF1", "Examknow"
+    author_email = "ek311@outlook.com"
     download_url = "",
     keywords = ["irc"]
 )

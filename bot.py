@@ -18,6 +18,7 @@ greetings = [
 owapikey = '' #place an api key for open weather map here
 admins = ['Examknow', 'freenode-staff']
 stewards = ['miraheze/Examknow', 'miraheze/RhinosF1', 'miraheze/John', 'wikipedia/The-Voidwalker', 'miraheze/Reception123']
+chanops = ['miraheze/Examknow', 'miraheze/RhinosF1', 'miraheze/John', 'wikipedia/The-Voidwalker', 'miraheze/Reception123']
 ##FUNCTION FLAGS - SET TO 1 TO ENABLE
 greetingsbot = 0
 weatherbot = 0
@@ -90,6 +91,7 @@ def on_welcome(bot):
     print('Authed to NickServ')
     time.sleep(10)
     bot.join_channel('#SigmaBot')
+    bot.join_channel('#SigmaBot-logs')
     print('Joined channels')
 def on_message(bot, channel, sender, message):
     global topic
@@ -107,8 +109,26 @@ def on_message(bot, channel, sender, message):
     global owapikey
     global flagpass
     global nonflagpass
+    global chanops
     sendernick = sender.split("!")[0]
     senderhost = sender.split("@")[1]
+    if message.lower().startswith('!opme') and senderhost in chanops:
+	bot.send_line('MODE ' + channel + ' +o ' + sendernick)
+
+    if message.lower().startswith('!deopme') and senderhost in chanops:
+	bot.send_line('MODE ' + channel + ' -o ' + sendernick)
+
+    if message.lower().startswith('!kick') and senderhost in chanops:
+	arg = message.split(' ')
+	target = arg[1]
+	bot.send_line('KICK ' + channel + ' ' + target)
+	
+    if message.lower().startswith('!help'):
+	bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
+	
+    if message.lower().startswith('!commands'):
+	bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
+	
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
         wiki = arg[1]
@@ -248,6 +268,7 @@ def on_message(bot, channel, sender, message):
             DATA = R.json()
 
             bot.send_message(channel, "Block request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the block worked.")
+	    bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just blocked ' + user + ' on ' + wiki + 'wiki for ' + reason)
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
             return
@@ -332,21 +353,29 @@ def on_message(bot, channel, sender, message):
             R = S.post(URL, data=PARAMS_3)
             DATA = R.json()
             bot.send_message(channel, "Unblock request sent. You may want to check https://" + wiki + ".miraheze.org/wiki/Special:Log?type=block&page=" + user + " to confirm that the unblock worked.")
+	    bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just (un)blocked ' + user + ' on ' + wiki + 'wiki for ' + reason)
         except:
             bot.send_message(channel, "An unexpected error occured. Did you type the wiki or user incorrectly? Do I have admin rights on that wiki?")
             
             
-    if message.lower().startswith('!delete') and sender in stewards:
-        
+    if message.lower().startswith('!delete') and senderhost in stewards:
         arg = message.split(' ')
         if len(arg) == 3:
-            wiki = arg[1]
-            page = arg[2]
-            reason = arg[3]
+	    try:
+            	wiki = arg[1]
+            	page = arg[2]
+            	reason = arg[3]
+	    except:
+            	bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
+		return
         elif len(arg) > 3:
-            wiki = arg[1]
-            page = arg[2]
-            reason = message.split(user, 1)[1]
+	    try:
+            	wiki = arg[1]
+            	page = arg[2]
+            	reason = message.split(page, 1)[1]
+	    except:
+            	bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
+		return
         else:
             bot.send_message(channel, "Syntax is !delete <wiki> <page> <reason>")
             return
@@ -401,7 +430,7 @@ def on_message(bot, channel, sender, message):
         PARAMS_3 = {
             'action': "delete",
             'title': page,
-            'reason': "Requested by " + sender + " Reason: " + reason,
+            'reason': "Requested by " + sendernick + " Reason: " + reason,
             'token': CSRF_TOKEN,
             'format': "json"
         }
@@ -410,20 +439,19 @@ def on_message(bot, channel, sender, message):
          R = S.post(URL, data=PARAMS_3)
          DATA = R.json()
          bot.send_message(channel, "The delete request was sent. You should check the wiki to make sure the page was deleted.")
+	 bot.send_message('#SigmaBot-logs', sender + ' (' + senderhost + ') just deleted ' + page + ' on ' + wiki + 'wiki for ' + reason)
         except:
          bot.send_message(channel, "An unexpected error occured. Did you type the wiki or page incorrectly? Do I have admin rights on that wiki?")
 
-    if message.lower().startswith('!log') and sender in stewards:
-        
+    if message.lower().startswith('!log') and senderhost in stewards:
         arg = message.split(' ')
         if len(arg) == 1:
             message = arg[1]
         elif len(arg) > 1:
-            reason = message.split('!log', 1)[1]
+            message = message.split('!log', 1)[1]
         else:
             bot.send_message(channel, "Syntax is !log <message>")
             return
-        
         S = requests.Session()
 
         URL = "https://test.miraheze.org/w/api.php"
@@ -481,8 +509,8 @@ def on_message(bot, channel, sender, message):
         PARAMS_3 = {
             "action": "edit",
             "title": "TestLogPage",
-            "summary": message + "(" + sender + ")",
-            "appendtext": "\n* " + sender + ": " + message,
+            "summary": message + "(" + sendernick + ")",
+            "appendtext": "\n* " + sendernick + ": " + message,
             "token": CSRF_TOKEN,
             "bot": "true",
             "format": "json"

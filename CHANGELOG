@@ -1,0 +1,32 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+## [UNRELEASED]
+These features have not yet been released but they are planned for future updates.
+- CentralAuth Lock/Hide Function
+- Global Account Information
+- !protect Command
+- !rollback Command
+
+## [1.0.0] 
+### Added
+- Channel Operator tools in bot.py
+- Added Action Logging Support
+- CentralAuth lookup function
+
+### Changed
+- !blockuser now allows multiword reasons
+- !unblockuser now allows multiword reasons
+- !delete now allows multiword reasons
+- !log now allows multiword messages
+
+### Fixed
+This update also includes bug fixes and other improvements. This update:
+- Fixed a bug where !log command would not connect to the API
+- Fixed a bug where !delete did not have proper credentials
+
+### Security
+- Fixed a bug that where the bot did not check if the IRC user was logged in
+- For more information please see https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-5302
