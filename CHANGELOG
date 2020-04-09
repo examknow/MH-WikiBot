@@ -10,7 +10,7 @@ These features have not yet been released but they are planned for future update
 - !protect Command
 - !rollback Command
 
-## [1.0.0] 
+## [0.1] 
 ### Added
 - Channel Operator tools in bot.py
 - Added Action Logging Support
