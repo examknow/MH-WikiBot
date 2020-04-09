@@ -538,7 +538,7 @@ def on_pm(bot, sender, message):
     global admins
     global owapikey
     print('Got PM')
-    if message.lower() == 'getinfo' and sender in admins:
+    if message.lower() == 'getinfo' and sendernick in admins:
         bot.set_nick(nick + '-down')
         bot.send_message(sender, 'Rebuilding')
         topic = ''
