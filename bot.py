@@ -150,7 +150,7 @@ def on_message(bot, channel, sender, message):
 	usersleft = int(100000) - int(users)
 	
 #	try:
-	bot.send_message(channel, "Only " + usersleft + " user accounts left to reach 100,000!")
+	bot.send_message(channel, "Only " + int(usersleft) + " user accounts left to reach 100,000!")
 #	except:
 #		bot.send_message(channel, "An error occured.")
 
