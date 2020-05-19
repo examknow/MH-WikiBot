@@ -147,7 +147,7 @@ def on_message(bot, channel, sender, message):
 	STATS = DATA["query"]["statistics"]
 	
 	users = str(STATS['users'])
-	usersleft = 100,000 - users
+	usersleft = int(100000) - int(users)
 	
 #	try:
 	bot.send_message(channel, "Only " + usersleft + " user accounts left to reach 100,000!")
