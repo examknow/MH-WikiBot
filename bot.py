@@ -145,7 +145,7 @@ def on_message(bot, channel, sender, message):
 	R = S.get(url=URL, params=PARAMS)
 	DATA = R.json()
 
-	print(DATA)
+	bot.send_message(channel, DATA)
 
 	
     if message.lower().startswith('!userinfo'):
