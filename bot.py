@@ -148,8 +148,8 @@ def on_message(bot, channel, sender, message):
 	
 	try:
 		bot.send_message(channel, "There are " + str(s['users']) + " on the Miraheze login wiki.")
-	except:
-		bot.send_message(channel, "An error occured.")
+#	except:
+#		bot.send_message(channel, "An error occured.")
 
 	
     if message.lower().startswith('!userinfo'):
