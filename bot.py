@@ -146,7 +146,7 @@ def on_message(bot, channel, sender, message):
 	DATA = R.json()
 	STATS = DATA["query"]["statistics"]
 	
-	users = int(STATS['users'])
+	users = str(STATS['users'])
 	usersleft = 100,000 - users
 	
 #	try:
