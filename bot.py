@@ -146,11 +146,10 @@ def on_message(bot, channel, sender, message):
 	DATA = R.json()
 	STATS = DATA["query"]["statistics"]
 	
-	for s in STATS:
-		try:
-			bot.send_message(channel, "There are " + str(s['users']) + " on the Miraheze login wiki.")
-		except:
-			bot.send_message(channel, "An error occured.")
+	try:
+		bot.send_message(channel, "There are " + str(s['users']) + " on the Miraheze login wiki.")
+	except:
+		bot.send_message(channel, "An error occured.")
 
 	
     if message.lower().startswith('!userinfo'):
