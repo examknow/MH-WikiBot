@@ -128,6 +128,26 @@ def on_message(bot, channel, sender, message):
 	
     if message.lower().startswith('!commands'):
 	bot.send_message(channel, "A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands")
+    if message.lower().startswith('!lwacc'):
+	S = requests.Session()
+
+	URL = "https://login.miraheze.org/w/api.php"
+
+	PARAMS = {
+	    "action": "query",
+	    "meta": "siteinfo",
+	    "formatversion": "2",
+	    "siprop": "statistics",
+	    "format": "json"
+	}
+
+	R = S.get(url=URL, params=PARAMS)
+	DATA = R.json()
+
+	try:
+           bot.send_message(DATA)
+        except:
+           bot.send_message(channel, "An error occured")
 	
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
