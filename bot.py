@@ -92,6 +92,7 @@ def on_welcome(bot):
     time.sleep(10)
     bot.join_channel('#SigmaBot')
     bot.join_channel('#SigmaBot-logs')
+    bot.join_channel('#miraheze-bots')
     print('Joined channels')
 def on_message(bot, channel, sender, message):
     global topic
