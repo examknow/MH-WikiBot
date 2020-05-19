@@ -147,7 +147,7 @@ def on_message(bot, channel, sender, message):
 	STATS = DATA["query"]["statistics"]
 	
 #	try:
-	bot.send_message(channel, "There are " + str(s['users']) + " on the Miraheze login wiki.")
+	bot.send_message(channel, "There are " + str(STATS['users']) + " on the Miraheze login wiki.")
 #	except:
 #		bot.send_message(channel, "An error occured.")
 
