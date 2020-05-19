@@ -146,8 +146,11 @@ def on_message(bot, channel, sender, message):
 	DATA = R.json()
 	STATS = DATA["query"]["statistics"]
 	
+	users = str(STATS['users'])
+	usersleft = 100,000 - users
+	
 #	try:
-	bot.send_message(channel, "There are " + str(STATS['users']) + " on the Miraheze login wiki.")
+	bot.send_message(channel, "Only " + usersleft + " user accounts left to reach 100,000!")
 #	except:
 #		bot.send_message(channel, "An error occured.")
 
