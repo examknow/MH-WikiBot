@@ -149,10 +149,10 @@ def on_message(bot, channel, sender, message):
 	STATS = DATA["query"]["statistics"]
 	
 	users = str(STATS['users'])
-	usersleft = int(100000) - int(users)
+	usersleft = int(250000) - int(users)
 	
 #	try:
-	bot.send_message(channel, "Only %s user accounts left to reach 100,000!" % (usersleft))
+	bot.send_message(channel, "Only %s user accounts left to reach 250,000!" % (usersleft))
 #	except:
 #		bot.send_message(channel, "An error occured.")
 
