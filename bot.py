@@ -547,7 +547,7 @@ def on_message(bot, channel, sender, message):
         try:
             R = S.post(URL, data=PARAMS_3)
             DATA = R.json()
-            bot.send_message(channel, "Logged message at https://test.miraheze.org/wiki/TestLogPage")
+            bot.send_message(channel, "Logged message at https://test.miraheze.org/wiki/TestWiki:Admin_Action_Log")
         except:
             bot.send_message(channel, "An unexpected error occured. Do I have edit rights on that wiki?")
         
