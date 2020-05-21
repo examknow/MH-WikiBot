@@ -535,7 +535,7 @@ def on_message(bot, channel, sender, message):
 # Step 4: POST request to block user
         PARAMS_3 = {
             "action": "edit",
-            "title": "TestLogPage",
+            "title": "TestWiki:Admin Action Log",
             "summary": message + "(" + sendernick + ")",
             "appendtext": "\n* " + sendernick + ": " + message,
             "token": CSRF_TOKEN,
