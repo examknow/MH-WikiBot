@@ -51,7 +51,7 @@ def getinfo():
     infofile = open('settings.csv', 'r')
     for line in infofile:
         setting = line.split(';')
-        print setting
+        print (setting)
         if setting[0] == 'topic':
             topic = setting[1]
         if setting[0] == 'nick':
@@ -93,13 +93,13 @@ def on_connect(bot):
 def on_welcome(bot):
     global nspassword
     bot.send_message('NickServ', 'identify ' + nspassword)
-    print 'Authed to NickServ'
+    print ('Authed to NickServ')
     time.sleep(10)
     bot.join_channel('#SigmaBot')
     bot.join_channel('#SigmaBot-logs')
     bot.join_channel('#miraheze-bots')
     bot.join_channel('#miraheze-testwiki')
-    print 'Joined channels'
+    print ('Joined channels')
 
 
 def on_message(
@@ -238,7 +238,7 @@ def on_message(
                     bot.send_message(channel, u['name'] + ' has made '
                             + u['editcount'] + ' on all Miraheze wikis')
         except TypeError:
-            print 'TypeError when using !globaluser on ' + channel
+            print ('TypeError when using !globaluser on ' + channel)
             bot.send_message(channel,
                              'An unexpected error has occured. I have reported this to Examknow.'
                              )
@@ -671,7 +671,7 @@ def on_pm(bot, sender, message):
     global cashortbot
     global admins
     global owapikey
-    print 'Got PM'
+    print ('Got PM')
     if message.lower() == 'getinfo' and sendernick in admins:
         bot.set_nick(nick + '-down')
         bot.send_message(sender, 'Rebuilding')
@@ -701,8 +701,8 @@ bot.on_private_message.append(on_pm)
 bot.on_connect.append(on_connect)
 bot.on_welcome.append(on_welcome)
 bot.on_public_message.append(on_message)
-print 'Starting...'
+print ('Starting...')
 
 bot.connect('chat.freenode.net')
-print 'Connected'
+print ('Connected')
 bot.run_loop()
