@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import QuIRC
 import random
 import requests
@@ -32,7 +30,7 @@ nspassword = ''
 
 
 def getinfo():
-    print 'loadingconfig'
+    print ('loadingconfig')
     global topic
     global nick
     global greetings
