@@ -146,34 +146,29 @@ def on_message(
                          )
 
     if message.lower().startswith('!lwacc'):
-        S = requests.Session()
+      S = requests.Session()
 
-        URL = 'https://login.miraheze.org/w/api.php'
+      URL = "https://login.miraheze.org/w/api.php"
 
-        PARAMS = {
-            'action': 'query',
-            'meta': 'siteinfo',
-            'formatversion': '2',
-            'siprop': 'statistics',
-            'format': 'json',
-            }
+      PARAMS = {
+          "action": "query",
+          "meta": "siteinfo",
+          "formatversion": "2",
+          "siprop": "statistics",
+          "format": "json"
+      }
 
-        R = S.get(url=URL, params=PARAMS)
-        DATA = R.json()
-        STATS = DATA['query']['statistics']
+      R = S.get(url=URL, params=PARAMS)
+      DATA = R.json()
+      STATS = DATA["query"]["statistics"]
 
-        users = str(STATS['users'])
-        usersleft = int(100000) - int(users)
+      users = str(STATS['users'])
+      usersleft = int(250000) - int(users)
 
-# ....try:
-
-        bot.send_message(channel,
-                         'Only %s user accounts left to reach 100,000!'
-                         % usersleft)
-
-# ....except:
-# ........bot.send_message(channel, "An error occured.")
-
+    #	try:
+      bot.send_message(channel, "Only %s user accounts left to reach 250,000!" % (usersleft))
+#	except:
+#		bot.send_message(channel, "An error occured.")
     if message.lower().startswith('!userinfo'):
         arg = message.split(' ')
         wiki = arg[1]
