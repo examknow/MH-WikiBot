@@ -229,10 +229,12 @@ def on_message(
         try:
             R = S.post(URL, data=PARAMS_3)
             DATA = R.json()
+            print(DATA)
             bot.send_message(channel,
                              'Logged message at https://ops.miraheze.org/wiki/Global_IRC_Log'
                              )
         except:
+            print(DATA)
             bot.send_message(channel,
                              'An unexpected error occured. Do I have edit rights on that wiki?'
                              )
