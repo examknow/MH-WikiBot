@@ -145,6 +145,99 @@ def on_message(
                          'A list of my commands can be found at https://publictestwiki.com/wiki/User:EkWikiBot/Commands'
                          )
 
+        
+    if message.lower().startswith('!oplog') and senderhost in stewards:
+        arg = message.split(' ')
+        if len(arg) == 1:
+            message = arg[1]
+        elif len(arg) > 1:
+            message = message.split('!oplog', 1)[1]
+        else:
+            bot.send_message(channel, 'Syntax is !oplog <message>')
+            return
+        S = requests.Session()
+
+        URL = 'https://test.miraheze.org/w/api.php'
+
+# Step 1: GET request to fetch login token
+
+        PARAMS_0 = {
+            'action': 'query',
+            'meta': 'tokens',
+            'type': 'login',
+            'format': 'json',
+            }
+
+        try:
+            R = S.get(url=URL, params=PARAMS_0)
+            DATA = R.json()
+        except:
+            bot.send_message(channel,
+                             'Catostrophic Error! Unable to connect to the wiki.'
+                             )
+            return
+
+        LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
+
+# Step 2: POST request to log in. Use of main account for login is not
+# supported. Obtain credentials via Special:BotPasswords
+# (https://www.mediawiki.org/wiki/Special:BotPasswords) for lgname & lgpassword
+
+        PARAMS_1 = {
+            'action': 'login',
+            'lgname': 'EkWikiBot',
+            'lgpassword': flagpass,
+            'lgtoken': LOGIN_TOKEN,
+            'format': 'json',
+            }
+        try:
+            R = S.post(URL, data=PARAMS_1)
+        except:
+            bot.send_message(channel,
+                             'Catostrophic Error! Unable to connect to the wiki.'
+                             )
+            return
+
+# Step 3: GET request to fetch CSRF token
+
+        PARAMS_2 = {'action': 'query', 'meta': 'tokens',
+                    'format': 'json'}
+
+        try:
+            R = S.get(url=URL, params=PARAMS_2)
+            DATA = R.json()
+        except:
+            bot.send_message(channel,
+                             'Catostrophic Error! Unable to connect to the wiki.'
+                             )
+            return
+
+        CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
+
+# Step 4: POST request to block user
+
+        PARAMS_3 = {
+            'action': 'edit',
+            'title': 'Global_IRC_Log',
+            'summary': message + '(' + sendernick + ')',
+            'appendtext': '\n* ' + sendernick + ': ' + message,
+            'token': CSRF_TOKEN,
+            'bot': 'true',
+            'format': 'json',
+            }
+
+        try:
+            R = S.post(URL, data=PARAMS_3)
+            DATA = R.json()
+            bot.send_message(channel,
+                             'Logged message at https://ops.miraheze.org/wiki/Global_IRC_Log'
+                             )
+        except:
+            bot.send_message(channel,
+                             'An unexpected error occured. Do I have edit rights on that wiki?'
+                             )
+
+
     if message.lower().startswith('!lwacc'):
       S = requests.Session()
 
