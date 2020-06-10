@@ -157,7 +157,7 @@ def on_message(
             return
         S = requests.Session()
 
-        URL = 'https://test.miraheze.org/w/api.php'
+        URL = 'https://ops.miraheze.org/w/api.php'
 
 # Step 1: GET request to fetch login token
 
