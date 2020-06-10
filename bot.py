@@ -13,7 +13,7 @@ greetings = ['Hello {}!', 'Hi {}!', 'Hello there {}!', 'Hi there {}!',
 owapikey = ''  # place an api key for open weather map here
 admins = ['Examknow', 'freenode-staff']
 stewards = ['miraheze/Examknow', 'miraheze/RhinosF1', 'miraheze/John',
-            'wikipedia/The-Voidwalker', 'miraheze/Reception123']
+            'wikipedia/The-Voidwalker', 'miraheze/Reception123', 'miraheze/bot/Examknow']
 chanops = ['miraheze/Examknow', 'miraheze/RhinosF1', 'miraheze/John',
            'wikipedia/The-Voidwalker', 'miraheze/Reception123']
 
@@ -97,6 +97,8 @@ def on_welcome(bot):
     bot.join_channel('#SigmaBot-logs')
     bot.join_channel('#miraheze-bots')
     bot.join_channel('#miraheze-testwiki')
+    bot.join_channel('#miraheze-overflow')
+    bot.join_channel('#sygnal-alerts')
     print ('Joined channels')
 
 
@@ -225,7 +227,7 @@ def on_message(
         PARAMS_3 = {
             'action': 'edit',
             'title': 'Global_IRC_Log',
-            'summary': message + '(' + sendernick + ')',
+            'summary': message + ' (' + sendernick + ')',
             'appendtext': '\n* ' + sendernick + ': ' + message,
             'token': CSRF_TOKEN,
             'bot': 'true',
