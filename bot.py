@@ -360,6 +360,7 @@ def on_message(
     if message.lower().startswith('!blockuser') and senderhost \
         in stewards:
         arg = message.split(' ')
+        performer = senderhost.split('/')[1]
         if len(arg) == 3:
             wiki = arg[1]
             user = arg[2]
@@ -430,7 +431,7 @@ def on_message(
             'action': 'block',
             'user': user,
             'expiry': 'infinite',
-            'reason': '{{BotBlocked|user=' + sendernick + '|reason=' \
+            'reason': '{{BotBlocked|user=' + performer + '|reason=' \
                 + reason + '}}',
             'bot': 'false',
             'token': CSRF_TOKEN,
@@ -459,6 +460,7 @@ def on_message(
     if message.lower().startswith('!unblockuser') and senderhost \
         in stewards:
         arg = message.split(' ')
+        performer = senderhost.split('/')[1]
         if len(arg) == 3:
             wiki = arg[1]
             user = arg[2]
@@ -537,7 +539,7 @@ def on_message(
         PARAMS_3 = {
             'action': 'unblock',
             'user': user,
-            'reason': 'Requested by ' + sendernick + ' Reason: ' \
+            'reason': 'Requested by ' + performer + ' Reason: ' \
                 + reason,
             'token': CSRF_TOKEN,
             'format': 'json',
